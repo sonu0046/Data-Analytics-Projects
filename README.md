@@ -19,13 +19,12 @@ Aspiring Data Analyst skilled in Python, SQL, Power BI and AI tools. Passionate 
 - Product Inventory
 - Order Summary
 
-## Power BI Dashboards
-- Sales Dashboard
-- Customer Analysis Dashboard
-- HR Analytics Dashboard
-- Finance Dashboard
-- Inventory Dashboard
-- E-Commerce Dashboard
+## Power BI Projects
+
+- [Sales Dashboard](PowerBI/Sales_Dashboard/)
+- [Customer Analysis Dashboard](PowerBI/Customer_Analysis_Dashboard/)
+- [HR Analytics Dashboard](PowerBI/HR_Analytics_Dashboard/)
+- [Inventory Dashboard](PowerBI/Inventory_Dashboard/)
 
 ## Skills
 - Python

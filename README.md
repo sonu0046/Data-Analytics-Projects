@@ -2,7 +2,7 @@
 
 Hi, I'm Bhimrao Yamulwad.
 
-This repository contains my Data Analytics projects using Python, SQL, Power BI and AI tools.
+Aspiring Data Analyst skilled in Python, SQL, Power BI and AI tools. Passionate about transforming raw data into meaningful insights, creating interactive dashboards, and solving business problems through data-driven decisions.
 
 ## Python Projects
 - Student Marks Analysis
@@ -37,5 +37,7 @@ This repository contains my Data Analytics projects using Python, SQL, Power BI 
 - AI Prompt Engineering
 
 ## Contact
-LinkedIn: Add Your LinkedIn Link
-GitHub: Add Your GitHub Link
+
+LinkedIn: https://www.linkedin.com/in/bhimrao-yamulwad-121218386
+
+GitHub: https://github.com/sonu0046

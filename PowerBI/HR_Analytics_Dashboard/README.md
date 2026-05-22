@@ -13,3 +13,7 @@ Analyze workforce performance and employee metrics.
 - Salary Distribution
 - Attrition Trend
 - Employee Performance
+
+## Dashboard Preview
+
+![HR Dashboard](hr_dashboard.png)

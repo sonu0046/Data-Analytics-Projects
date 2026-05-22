@@ -14,3 +14,7 @@ Analyze sales performance across products and months.
 - Sales Trend Line Chart
 - Product Sales Bar Chart
 - Revenue Pie Chart
+  
+## Dashboard Preview
+
+![Sales Dashboard](sales_dashboard.png)

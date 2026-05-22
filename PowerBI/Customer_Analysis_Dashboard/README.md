@@ -12,3 +12,7 @@ Analyze customer purchase patterns across cities and categories.
 - Sales by City (Bar Chart)
 - Purchase by Category (Pie Chart)
 - Total Purchase Card
+
+## Dashboard Preview
+
+![Customer Dashboard](customer_dashboard.png)

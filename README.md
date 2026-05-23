@@ -4,11 +4,14 @@ Hi, I'm Bhimrao Yamulwad.
 
 Aspiring Data Analyst skilled in Python, SQL, Power BI and AI tools.
 
-## Power BI Projects
+## Power BI
+
 - Sales Dashboard
 - Customer Analysis Dashboard
 - HR Analytics Dashboard
-- Finance Dashboard
+- Ecommerce Sales Dashboard
+- Call Center Dashboard
+- Superstore Dashboard
 
 ## Python Projects
 

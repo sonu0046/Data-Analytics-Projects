@@ -1,0 +1,21 @@
+# Superstore Dashboard
+
+## Objective
+Analyze retail sales and profit performance.
+
+## KPIs
+- Total Sales
+- Total Profit
+- Total Customers
+- Average Discount
+
+## Dashboard Insights
+- Top Products
+- Top Customers
+- Category Performance
+- Profit Analysis
+
+## Tools Used
+- Power BI
+- DAX
+- Power Query

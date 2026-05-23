@@ -20,3 +20,9 @@ Queries are available in the project files.
 
 ## Outcome
 Generated insights on monthly sales trends and product performance.
+
+## Files
+
+- README.md
+- sales_queries.sql
+- sales_data.csv

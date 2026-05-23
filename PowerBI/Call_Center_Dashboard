@@ -1,0 +1,21 @@
+# Call Center Dashboard
+
+## Objective
+Monitor call center performance and customer service metrics.
+
+## KPIs
+- Total Calls
+- Resolved Calls
+- Pending Calls
+- Customer Satisfaction
+
+## Dashboard Insights
+- Agent Performance
+- Call Volume Trend
+- Resolution Rate
+- Customer Feedback Analysis
+
+## Tools Used
+- Power BI
+- DAX
+- Power Query

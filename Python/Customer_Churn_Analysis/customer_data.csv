@@ -1,0 +1,6 @@
+CustomerID,Age,MonthlyCharges,Churn
+1,25,1200,Yes
+2,30,1500,No
+3,28,1300,Yes
+4,35,2000,No
+5,40,2500,No

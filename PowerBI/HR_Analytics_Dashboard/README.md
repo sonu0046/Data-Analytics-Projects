@@ -16,4 +16,4 @@ Analyze workforce performance and employee metrics.
 
 ## Dashboard Preview
 
-![HR Dashboard](hr_dashboard.png)
+![HR Dashboard](HR_Analytics_Dashboard.png)

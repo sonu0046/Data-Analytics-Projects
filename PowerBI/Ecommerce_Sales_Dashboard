@@ -1,0 +1,21 @@
+# Ecommerce Sales Dashboard
+
+## Objective
+Analyze online store sales performance using Power BI.
+
+## KPIs
+- Total Sales
+- Total Profit
+- Total Orders
+- Average Order Value
+
+## Dashboard Insights
+- Top Selling Products
+- Region Wise Sales
+- Monthly Sales Trend
+- Category Performance
+
+## Tools Used
+- Power BI
+- DAX
+- Power Query

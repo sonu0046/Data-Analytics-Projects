@@ -18,3 +18,11 @@ Analyze sales data using Python and Pandas.
 
 ## Outcome
 Generated business insights from sales data using Python.
+
+## Python Projects
+
+- Sales Analysis (Python)
+
+
+
+

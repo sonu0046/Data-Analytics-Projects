@@ -1,32 +1,34 @@
-# Data Analytics Portfolio
+# Hi, I'm Bhimrao Yamulwad 👋
 
-Hi, I'm Bhimrao Yamulwad.
+Aspiring Data Analyst passionate about Python, SQL, Power BI and AI.
 
-Aspiring Data Analyst skilled in Python, SQL, Power BI and AI tools.
+## Skills
+- Python
+- SQL
+- Power BI
+- Excel
+- Data Visualization
+- Pandas
+- DAX
 
-## Power BI
-
+## Projects
+### Power BI
 - Sales Dashboard
-- Customer Analysis Dashboard
 - HR Analytics Dashboard
 - Ecommerce Sales Dashboard
-- Call Center Dashboard
-- Superstore Dashboard
-- Blinkit Sales Dashboard
-- Amazon Sales Dashboard
 - Hospital Management Dashboard
 
-## Python Projects
+### Python
+- Sales Analysis
+- Customer Churn Analysis
+- IPL Data Analysis
+- Stock Market Analysis
+- Netflix Data Analysis
 
-- Sales Analysis (Python)
-- Employee Salary Analysis (Python)
-- Expense Tracker (Python)
-- Stock Market Analysis (Python)
-- IPL Data Analysis (Python)
-- Customer Churn Analysis (Python)
-- Netflix Data Analysis (Python)
-
-## SQL Projects
+### SQL
 - Monthly Sales Report
 - Customer Analysis
 - Employee Analysis
+
+## GitHub Portfolio
+https://github.com/sonu0046/Data-Analytics-Projects

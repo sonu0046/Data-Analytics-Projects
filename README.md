@@ -20,6 +20,7 @@ Aspiring Data Analyst skilled in Python, SQL, Power BI and AI tools.
 - Expense Tracker (Python)
 - Stock Market Analysis (Python)
 - IPL Data Analysis (Python)
+- Netflix Data Analysis (Python)
 
 ## SQL Projects
 - Monthly Sales Report

@@ -12,6 +12,9 @@ Aspiring Data Analyst skilled in Python, SQL, Power BI and AI tools.
 - Ecommerce Sales Dashboard
 - Call Center Dashboard
 - Superstore Dashboard
+- Blinkit Sales Dashboard
+- Amazon Sales Dashboard
+- Hospital Management Dashboard
 
 ## Python Projects
 

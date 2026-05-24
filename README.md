@@ -19,6 +19,7 @@ Aspiring Data Analyst skilled in Python, SQL, Power BI and AI tools.
 - Employee Salary Analysis (Python)
 - Expense Tracker (Python)
 - Stock Market Analysis (Python)
+- IPL Data Analysis (Python)
 
 ## SQL Projects
 - Monthly Sales Report

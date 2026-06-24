@@ -1,4 +1,6 @@
-# D2C Sales Dashboard 2025
+## Dashboard Preview
+
+![D2C Sales Dashboard](D2C_Sales_Dashboard_2025.png)
 
 ## Project Overview
 This Power BI dashboard analyzes Direct-to-Consumer (D2C) sales performance for 2025.

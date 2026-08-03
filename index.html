@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhimrao Yamulwad | Premium Data Analyst Portfolio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                            950: '#0f0720',
+                        },
+                        neon: {
+                            blue: '#00f0ff',
+                            purple: '#bd00ff',
+                            green: '#39ff14',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+                    },
+                    boxShadow: {
+                        'neon-glow': '0 0 20px rgba(139, 92, 246, 0.15)',
+                        'neon-glow-strong': '0 0 35px rgba(139, 92, 246, 0.4)',
+                        'neon-cyan': '0 0 20px rgba(0, 240, 255, 0.25)',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Alpine.js for lightweight reactivity -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #05020c;
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+        }
+        .text-glow-cyan {
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090416;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b1f6e;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5b21b6;
+        }
+        /* Glassmorphism */
+        .glass {
+            background: rgba(15, 7, 32, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(139, 92, 246, 0.15);
+        }
+        .glass-card {
+            background: rgba(18, 10, 41, 0.45);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(139, 92, 246, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.15);
+            transform: translateY(-4px);
+        }
+        /* Gradients */
+        .grad-primary {
+            background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 50%, #4c1d95 100%);
+        }
+        .grad-text {
+            background: linear-gradient(to right, #ffffff, #c4b5fd, #a78bfa, #00f0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Coding background */
+        .matrix-bg {
+            background-image: radial-gradient(rgba(139, 92, 246, 0.15) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+<body class="text-slate-100 overflow-x-hidden selection:bg-brand-500 selection:text-white" x-data="{ activeTab: 'all', openModal: false, modalData: {}, currentPlaygroundTab: 'sql' }">
+
+    <!-- Canvas Background for Particle Nodes (Data Analytics representation) -->
+    <canvas id="dataNodesCanvas" class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none opacity-40"></canvas>
+
+    <!-- Glass Header Navigation -->
+    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 glass border-b border-white/5 py-4">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="h-10 w-10 rounded-xl grad-primary flex items-center justify-center text-white shadow-neon-glow group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-chart-line text-lg"></i>
+                </div>
+                <div>
+                    <span class="text-lg font-extrabold tracking-wide text-white group-hover:text-brand-300 transition-colors">Bhimrao Yamulwad</span>
+                    <span class="block text-xs text-brand-400 font-mono tracking-widest uppercase">Data Analyst</span>
+                </div>
+            </a>
+
+            <!-- Mobile menu button -->
+            <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-slate-300 hover:text-white focus:outline-none" x-data="{ mobileMenuOpen: false }">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-300">
+                <a href="#about" class="hover:text-brand-400 hover:text-glow transition-all">About</a>
+                <a href="#skills" class="hover:text-brand-400 hover:text-glow transition-all">Skills</a>
+                <a href="#projects" class="hover:text-brand-400 hover:text-glow transition-all">Projects</a>
+                <a href="#playground" class="hover:text-brand-400 hover:text-glow transition-all">Interactive Playground</a>
+                <a href="#contact" class="hover:text-brand-400 hover:text-glow transition-all">Contact</a>
+            </nav>
+
+            <div class="hidden md:flex items-center gap-4">
+                <a href="#contact" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 font-semibold text-sm transition-all shadow-neon-glow hover:shadow-neon-glow-strong flex items-center gap-2">
+                    Let's Connect <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" x-transition class="md:hidden absolute top-full left-0 w-full glass border-b border-white/5 py-4 px-6 flex flex-col gap-4">
+            <a href="#about" @click="mobileMenuOpen = false" class="text-slate-300 hover:text-brand-400 py-2 block font-medium">About</a>
+            <a href="#skills" @click="mobileMenuOpen = false" class="text-slate-300 hover:text-brand-400 py-2 block font-medium">Skills</a>
+            <a href="#projects" @click="mobileMenuOpen = false" class="text-slate-300 hover:text-brand-400 py-2 block font-medium">Projects</a>
+            <a href="#playground" @click="mobileMenuOpen = false" class="text-slate-300 hover:text-brand-400 py-2 block font-medium">Interactive Playground</a>
+            <a href="#contact" @click="mobileMenuOpen = false" class="text-slate-300 hover:text-brand-400 py-2 block font-medium">Contact</a>
+            <a href="#contact" @click="mobileMenuOpen = false" class="px-5 py-2.5 text-center rounded-xl bg-brand-600 text-white font-semibold text-sm transition-all">Let's Connect</a>
+        </div>
+    </header>
+
+    <main class="pt-24">
+        <!-- Hero Section -->
+        <section id="hero" class="relative min-h-[90vh] flex items-center py-20 px-6 lg:px-8 overflow-hidden matrix-bg">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#05020c]/80 to-[#05020c]"></div>
+            <div class="max-w-7xl mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+
+                <!-- Left Details -->
+                <div class="lg:col-span-7 flex flex-col justify-center text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border-white/10 text-brand-300 font-mono text-xs font-semibold mb-6 self-center lg:self-start shadow-neon-glow">
+                        <span class="w-2 h-2 rounded-full bg-neon-cyan animate-ping"></span>
+                        <span>Available for Freelance & Full-time Roles</span>
+                    </div>
+                    <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight mb-6">
+                        <span class="block text-slate-100 font-light">Transforming Raw Data into</span>
+                        <span class="block mt-2 grad-text text-glow pb-2">Actionable Intelligence</span>
+                    </h1>
+                    <p class="text-lg text-slate-400 max-w-2xl mb-8 leading-relaxed">
+                        Hi, I'm <strong class="text-white font-semibold">Bhimrao Yamulwad</strong>. An aspiring Data Analyst specializing in extracting value from complex datasets using Python, SQL, and Power BI. I bridge the gap between data engineering and business decisions.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
+                        <a href="#projects" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-brand-600 hover:bg-brand-500 font-bold text-white transition-all shadow-neon-glow hover:shadow-neon-glow-strong flex items-center justify-center gap-3 group">
+                            Explore Projects
+                            <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                        </a>
+                        <a href="#contact" class="w-full sm:w-auto px-8 py-4 rounded-xl glass hover:bg-white/10 border-white/10 hover:border-brand-500/50 text-slate-300 hover:text-white font-bold transition-all flex items-center justify-center gap-3">
+                            Let's Chat <i class="fa-solid fa-comment-dots"></i>
+                        </a>
+                    </div>
+
+                    <!-- Social Icons -->
+                    <div class="flex gap-6 mt-12 justify-center lg:justify-start items-center">
+                        <span class="text-xs font-semibold uppercase tracking-widest text-slate-500 font-mono">Connect With Me:</span>
+                        <a href="https://github.com/sonu0046/Data-Analytics-Projects" target="_blank" class="h-10 w-10 rounded-xl glass hover:border-brand-500 hover:text-brand-400 flex items-center justify-center transition-all text-slate-400">
+                            <i class="fa-brands fa-github text-xl"></i>
+                        </a>
+                        <a href="#" class="h-10 w-10 rounded-xl glass hover:border-brand-500 hover:text-brand-400 flex items-center justify-center transition-all text-slate-400">
+                            <i class="fa-brands fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="mailto:yamulwad.bhimrao@example.com" class="h-10 w-10 rounded-xl glass hover:border-brand-500 hover:text-brand-400 flex items-center justify-center transition-all text-slate-400">
+                            <i class="fa-solid fa-envelope text-lg"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Visual Element -->
+                <div class="lg:col-span-5 relative flex justify-center items-center">
+                    <div class="w-full max-w-[450px] aspect-square rounded-3xl relative grad-primary opacity-20 filter blur-3xl absolute -z-10 animate-pulse"></div>
+                    <div class="w-full glass-card rounded-2xl p-6 relative border-brand-500/20 shadow-neon-glow overflow-hidden">
+
+                        <!-- Top header of decorative widget -->
+                        <div class="flex items-center justify-between border-b border-white/5 pb-4 mb-4">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+                                <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                                <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+                            </div>
+                            <span class="text-xs font-mono text-slate-400 flex items-center gap-2">
+                                <i class="fa-solid fa-shield-halved text-brand-400"></i> live_metrics_engine.py
+                            </span>
+                        </div>
+
+                        <!-- Mini charts & mock data visualizers -->
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-xs font-mono text-slate-400 mb-1">
+                                    <span>SQL Query Optimization Rate</span>
+                                    <span class="text-brand-300">94.2%</span>
+                                </div>
+                                <div class="w-full bg-white/5 rounded-full h-2 overflow-hidden">
+                                    <div class="bg-gradient-to-r from-brand-500 to-neon-cyan h-full rounded-full" style="width: 94.2%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-xs font-mono text-slate-400 mb-1">
+                                    <span>Data Accuracy Pipeline</span>
+                                    <span class="text-neon-cyan">99.98%</span>
+                                </div>
+                                <div class="w-full bg-white/5 rounded-full h-2 overflow-hidden">
+                                    <div class="bg-gradient-to-r from-neon-cyan to-brand-500 h-full rounded-full" style="width: 99.98%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Decorative Stats Grid -->
+                            <div class="grid grid-cols-2 gap-3 pt-2">
+                                <div class="p-3 bg-white/5 rounded-xl border border-white/5">
+                                    <span class="block text-2xl font-bold text-white font-mono">15+</span>
+                                    <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Analytics Dashboards</span>
+                                </div>
+                                <div class="p-3 bg-white/5 rounded-xl border border-white/5">
+                                    <span class="block text-2xl font-bold text-white font-mono">5k+</span>
+                                    <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Lines of Clean Code</span>
+                                </div>
+                            </div>
+
+                            <!-- Real-time code execution visual -->
+                            <div class="p-3 bg-brand-950/80 rounded-xl border border-white/10 font-mono text-[11px] leading-relaxed text-slate-300 overflow-x-auto">
+                                <div class="text-emerald-400">&gt;&gt;&gt; import pandas as pd</div>
+                                <div class="text-emerald-400">&gt;&gt;&gt; df = pd.read_csv("sales_data.csv")</div>
+                                <div class="text-emerald-400">&gt;&gt;&gt; df.groupby("Region")["Revenue"].sum()</div>
+                                <div class="text-slate-400">
+                                    Region: West  - $2.4M <br>
+                                    Region: East  - $1.8M <br>
+                                    Region: North - $1.2M
+                                </div>
+                                <div class="text-indigo-400 mt-1"># High-impact dashboard ready!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-24 px-6 lg:px-8 relative overflow-hidden">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+
+                    <!-- Left Profile Representation / Mock Analytics Workstation -->
+                    <div class="lg:col-span-5 relative group">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-brand-600 to-neon-purple rounded-3xl opacity-30 blur-2xl group-hover:opacity-40 transition-opacity"></div>
+                        <div class="relative glass-card rounded-3xl p-8 border-brand-500/20 shadow-neon-glow flex flex-col items-center text-center">
+                            <div class="w-28 h-28 rounded-2xl bg-brand-900/50 border-2 border-brand-500/30 flex items-center justify-center mb-6 shadow-neon-cyan">
+                                <i class="fa-solid fa-user-tie text-5xl text-brand-400"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-2">Bhimrao Yamulwad</h3>
+                            <p class="text-sm font-mono text-brand-400 mb-6">Data Analyst & AI Enthusiast</p>
+
+                            <div class="w-full space-y-3 pt-4 border-t border-white/5 text-left text-sm font-medium text-slate-300">
+                                <div class="flex justify-between">
+                                    <span class="text-slate-500 font-mono">Location:</span>
+                                    <span>Pune, India</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-500 font-mono">Experience:</span>
+                                    <span>Aspiring / Proactive Builder</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-500 font-mono">Primary Focus:</span>
+                                    <span>Business Intelligence & ML</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Bio details -->
+                    <div class="lg:col-span-7">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="h-[2px] w-12 bg-brand-500"></span>
+                            <span class="text-xs uppercase font-extrabold tracking-widest text-brand-400 font-mono">About Me</span>
+                        </div>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-6">
+                            Driven by Data, Guided by Insights.
+                        </h2>
+                        <div class="space-y-6 text-slate-300 text-base leading-relaxed">
+                            <p>
+                                I am an enthusiastic and highly detail-oriented Data Analyst with a passion for discovering patterns, trends, and secrets hidden in mountains of complex data. My skills lie in building dynamic, high-impact business dashboards, streamlining data architectures, and translating numbers into visual stories that drive strategic, revenue-generating decisions.
+                            </p>
+                            <p>
+                                With rigorous experience using Python for deep statistical data analysis, SQL for robust database architecture and queries, and Power BI for spectacular, pixel-perfect dynamic visualizations, I possess the versatility to handle end-to-end data pipelines from source extraction to C-suite presentations.
+                            </p>
+                        </div>
+
+                        <!-- Core pillars -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10">
+                            <div class="p-5 rounded-2xl glass border-white/5 flex flex-col gap-3">
+                                <i class="fa-solid fa-database text-2xl text-neon-cyan"></i>
+                                <h4 class="font-bold text-white">Advanced Queries</h4>
+                                <p class="text-xs text-slate-400">Database designing, multi-table joins, subqueries, and views optimization.</p>
+                            </div>
+                            <div class="p-5 rounded-2xl glass border-white/5 flex flex-col gap-3">
+                                <i class="fa-solid fa-chart-pie text-2xl text-brand-400"></i>
+                                <h4 class="font-bold text-white">Dynamic Dashboards</h4>
+                                <p class="text-xs text-slate-400">Interactive cross-filtering, intricate DAX modeling, and clean story layouts.</p>
+                            </div>
+                            <div class="p-5 rounded-2xl glass border-white/5 flex flex-col gap-3">
+                                <i class="fa-solid fa-brain text-2xl text-neon-purple"></i>
+                                <h4 class="font-bold text-white">Statistical Coding</h4>
+                                <p class="text-xs text-slate-400">Python scripts, customer behavior clustering, and automation pipelines.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-24 px-6 lg:px-8 relative overflow-hidden bg-brand-950/20 border-y border-white/5">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <div class="inline-flex items-center gap-3 mb-4">
+                        <span class="h-[2px] w-8 bg-brand-500"></span>
+                        <span class="text-xs uppercase font-extrabold tracking-widest text-brand-400 font-mono">Expertise Blueprint</span>
+                        <span class="h-[2px] w-8 bg-brand-500"></span>
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-white">My Interactive Skill Stack</h2>
+                    <p class="text-slate-400 mt-4">
+                        A robust, modern suite of data engineering, querying, visualization, and automation tools designed to empower data-backed decisions.
+                    </p>
+                </div>
+
+                <!-- Skill Categories Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Core Analytics Languages -->
+                    <div class="glass-card rounded-2xl p-6 border-white/5 flex flex-col gap-6">
+                        <div class="flex items-center gap-3 pb-4 border-b border-white/5">
+                            <div class="h-10 w-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+                                <i class="fa-solid fa-code text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white">Coding & Queries</h3>
+                                <p class="text-xs text-slate-400">Languages & Data Pipelines</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <!-- Python -->
+                            <div>
+                                <div class="flex justify-between text-sm font-semibold text-slate-200 mb-1">
+                                    <span>Python (Pandas, Numpy, Matplotlib)</span>
+                                    <span>95%</span>
+                                </div>
+                                <div class="w-full bg-white/5 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-brand-500 to-indigo-500 h-full rounded-full" style="width: 95%"></div>
+                                </div>
+                            </div>
+                            <!-- SQL -->
+                            <div>
+                                <div class="flex justify-between text-sm font-semibold text-slate-200 mb-1">
+                                    <span>SQL (PostgreSQL, MySQL, SQLite)</span>
+                                    <span>92%</span>
+                                </div>
+                                <div class="w-full bg-white/5 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-brand-500 to-indigo-500 h-full rounded-full" style="width: 92%"></div>
+                                </div>
+                            </div>
+                            <!-- R/Git -->
+                            <div>
+                                <div class="flex justify-between text-sm font-semibold text-slate-200 mb-1">
+                                    <span>Git & Version Control</span>
+                                    <span>85%</span>
+                                </div>
+                                <div class="w-full bg-white/5 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-brand-500 to-indigo-500 h-full rounded-full" style="width: 85%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visualization -->
+                    <div class="glass-card rounded-2xl p-6 border-white/5 flex flex-col gap-6">
+                        <div class="flex items-center gap-3 pb-4 border-b border-white/5">
+                            <div class="h-10 w-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400">
+                                <i class="fa-solid fa-chart-line text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white">Visual Intelligence</h3>
+                                <p class="text-xs text-slate-400">Dashboards & Storytelling</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <!-- Power BI -->
+                            <div>
+                                <div class="flex justify-between text-sm font-semibold text-slate-200 mb-1">
+                                    <span>Power BI (DAX Modeling, ETL)</span>
+                                    <span>96%</span>
+                                </div>
+                                <div class="w-full bg-white/5 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-amber-500 to-brand-500 h-full rounded-full" style="width: 96%"></div>
+                                </div>
+                            </div>
+                            <!-- Excel -->
+                            <div>
+                                <div class="flex justify-between text-sm font-semibold text-slate-200 mb-1">
+                                    <span>Advanced Excel (VLOOKUP, Pivots)</span>
+                                    <span>90%</span>
+                                </div>
+                                <div class="w-full bg-white/5 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-amber-500 to-brand-500 h-full rounded-full" style="width: 90%"></div>
+                                </div>
+                            </div>
+                            <!-- Storytelling -->
+                            <div>
+                                <div class="flex justify-between text-sm font-semibold text-slate-200 mb-1">
+                                    <span>Data Storytelling & Reporting</span>
+                                    <span>88%</span>
+                                </div>
+                                <div class="w-full bg-white/5 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-amber-500 to-brand-500 h-full rounded-full" style="width: 88%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analytical Methodologies -->
+                    <div class="glass-card rounded-2xl p-6 border-white/5 flex flex-col gap-6">
+                        <div class="flex items-center gap-3 pb-4 border-b border-white/5">
+                            <div class="h-10 w-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400">
+                                <i class="fa-solid fa-lightbulb text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white">Analytical Core</h3>
+                                <p class="text-xs text-slate-400">Methods & Problem Solving</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <!-- EDA -->
+                            <div>
+                                <div class="flex justify-between text-sm font-semibold text-slate-200 mb-1">
+                                    <span>Exploratory Data Analysis (EDA)</span>
+                                    <span>94%</span>
+                                </div>
+                                <div class="w-full bg-white/5 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-emerald-500 to-teal-500 h-full rounded-full" style="width: 94%"></div>
+                                </div>
+                            </div>
+                            <!-- Stats -->
+                            <div>
+                                <div class="flex justify-between text-sm font-semibold text-slate-200 mb-1">
+                                    <span>Descriptive & Inferential Stats</span>
+                                    <span>86%</span>
+                                </div>
+                                <div class="w-full bg-white/5 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-emerald-500 to-teal-500 h-full rounded-full" style="width: 86%"></div>
+                                </div>
+                            </div>
+                            <!-- Business Metrics -->
+                            <div>
+                                <div class="flex justify-between text-sm font-semibold text-slate-200 mb-1">
+                                    <span>KPI Definition & Tracking</span>
+                                    <span>90%</span>
+                                </div>
+                                <div class="w-full bg-white/5 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-emerald-500 to-teal-500 h-full rounded-full" style="width: 90%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Playground Section -->
+        <section id="playground" class="py-24 px-6 lg:px-8 relative overflow-hidden bg-brand-950/20 border-y border-white/5">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <div class="inline-flex items-center gap-3 mb-4">
+                        <span class="h-[2px] w-8 bg-brand-500"></span>
+                        <span class="text-xs uppercase font-extrabold tracking-widest text-brand-400 font-mono">Hands-on Experience</span>
+                        <span class="h-[2px] w-8 bg-brand-500"></span>
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-white">Interactive Playground</h2>
+                    <p class="text-slate-400 mt-4">
+                        Test out Bhimrao's interactive querying simulator right inside this page. Choose a tab to explore custom data processing logic!
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    <!-- Control Tab Column -->
+                    <div class="lg:col-span-4 space-y-3">
+                        <button @click="currentPlaygroundTab = 'sql'" :class="currentPlaygroundTab === 'sql' ? 'border-brand-500 bg-brand-900/20 text-white' : 'border-white/5 bg-transparent text-slate-400 hover:text-slate-200'" class="w-full text-left p-5 rounded-2xl border transition-all flex items-center gap-4 group">
+                            <div class="h-10 w-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-database text-lg"></i>
+                            </div>
+                            <div>
+                                <span class="block font-bold text-sm">SQL Query Tester</span>
+                                <span class="block text-xs text-slate-500 mt-0.5">Filter customer cohorts instantly</span>
+                            </div>
+                        </button>
+
+                        <button @click="currentPlaygroundTab = 'pandas'" :class="currentPlaygroundTab === 'pandas' ? 'border-brand-500 bg-brand-900/20 text-white' : 'border-white/5 bg-transparent text-slate-400 hover:text-slate-200'" class="w-full text-left p-5 rounded-2xl border transition-all flex items-center gap-4 group">
+                            <div class="h-10 w-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
+                                <i class="fa-brands fa-python text-lg"></i>
+                            </div>
+                            <div>
+                                <span class="block font-bold text-sm">Pandas Simulator</span>
+                                <span class="block text-xs text-slate-500 mt-0.5">Simulate aggregations & metrics</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Interactive Code Output Area -->
+                    <div class="lg:col-span-8 glass-card rounded-2xl p-6 border-white/5 font-mono text-sm shadow-neon-glow relative overflow-hidden">
+                        <div class="flex items-center justify-between border-b border-white/5 pb-4 mb-6">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                            </div>
+                            <span class="text-xs text-slate-500 font-mono">interactive_sandbox_v2.1</span>
+                        </div>
+
+                        <!-- SQL Sandbox -->
+                        <div x-show="currentPlaygroundTab === 'sql'" class="space-y-4">
+                            <div class="text-slate-400 text-xs">// Try running a mock customer cohort query:</div>
+                            <pre class="bg-brand-950/60 p-4 rounded-xl border border-white/5 text-slate-300 overflow-x-auto text-xs sm:text-sm">
+<span class="text-purple-400">SELECT</span> customer_id, <span class="text-blue-400">SUM</span>(order_value) <span class="text-purple-400">AS</span> total_spent,
+       <span class="text-blue-400">NTILE</span>(4) <span class="text-purple-400">OVER</span> (<span class="text-purple-400">ORDER BY</span> <span class="text-blue-400">SUM</span>(order_value) <span class="text-purple-400">DESC</span>) <span class="text-purple-400">AS</span> cohort_group
+<span class="text-purple-400">FROM</span> orders
+<span class="text-purple-400">GROUP BY</span> customer_id;</pre>
+
+                            <button onclick="runMockSQL()" class="px-5 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 font-bold text-xs text-white transition-all shadow-neon-glow flex items-center gap-2">
+                                <i class="fa-solid fa-play text-[10px]"></i> Execute Query
+                            </button>
+
+                            <div id="sqlOutput" class="hidden space-y-3 pt-4 border-t border-white/5">
+                                <span class="text-xs text-emerald-400 font-bold flex items-center gap-1">
+                                    <i class="fa-solid fa-circle-check"></i> 10 rows returned (execution time: 4.8ms)
+                                </span>
+                                <table class="w-full text-left text-xs text-slate-300 border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-white/10 text-slate-500">
+                                            <th class="py-2">customer_id</th>
+                                            <th class="py-2">total_spent</th>
+                                            <th class="py-2">cohort_group</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="border-b border-white/5">
+                                            <td class="py-2 text-brand-300">#C00482</td>
+                                            <td class="py-2 font-mono text-emerald-400">$14,240.50</td>
+                                            <td class="py-2">1 (Top 25%)</td>
+                                        </tr>
+                                        <tr class="border-b border-white/5">
+                                            <td class="py-2 text-brand-300">#C00938</td>
+                                            <td class="py-2 font-mono text-emerald-400">$12,890.00</td>
+                                            <td class="py-2">1 (Top 25%)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 text-brand-300">#C00109</td>
+                                            <td class="py-2 font-mono text-emerald-400">$9,540.25</td>
+                                            <td class="py-2">2</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Pandas Sandbox -->
+                        <div x-show="currentPlaygroundTab === 'pandas'" class="space-y-4">
+                            <div class="text-slate-400 text-xs"># Run custom python data operations:</div>
+                            <pre class="bg-brand-950/60 p-4 rounded-xl border border-white/5 text-slate-300 overflow-x-auto text-xs sm:text-sm">
+<span class="text-blue-400">import</span> pandas <span class="text-blue-400">as</span> pd
+df = pd.DataFrame(data)
+<span class="text-indigo-400"># Group by category and sum up margins</span>
+df.groupby(<span class="text-emerald-400">'Category'</span>)[<span class="text-emerald-400">'Margin'</span>].mean()</pre>
+
+                            <button onclick="runMockPandas()" class="px-5 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 font-bold text-xs text-white transition-all shadow-neon-glow flex items-center gap-2">
+                                <i class="fa-solid fa-play text-[10px]"></i> Run Pandas Script
+                            </button>
+
+                            <div id="pandasOutput" class="hidden space-y-2 pt-4 border-t border-white/5">
+                                <span class="text-xs text-emerald-400 font-bold flex items-center gap-1">
+                                    <i class="fa-solid fa-circle-check"></i> Pandas Aggregated Output
+                                </span>
+                                <pre class="bg-brand-950/40 p-3 rounded-xl border border-white/5 text-slate-300 text-xs overflow-x-auto">
+Category
+Electronics    0.3421
+Furniture      0.2289
+Office Goods   0.4105
+Name: Margin, dtype: float64</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-24 px-6 lg:px-8 relative overflow-hidden">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+
+                    <!-- Form explanation -->
+                    <div class="lg:col-span-5 flex flex-col justify-center">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="h-[2px] w-12 bg-brand-500"></span>
+                            <span class="text-xs uppercase font-extrabold tracking-widest text-brand-400 font-mono">Let's Collaborate</span>
+                        </div>
+                        <h2 class="text-3xl sm:text-5xl font-extrabold text-white mb-6">Start a Project.</h2>
+                        <p class="text-slate-400 text-base leading-relaxed mb-8">
+                            Have a dataset you need parsed, automated, or styled into beautiful dynamic dashboards? Feel free to reach out via the interactive form, or message me directly through any social media portal. I'm always looking to tackle complex data challenges!
+                        </p>
+
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4 text-slate-300">
+                                <div class="h-11 w-11 rounded-xl glass border-white/5 flex items-center justify-center text-brand-400 shadow-neon-glow">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <span class="text-sm font-semibold">yamulwad.bhimrao@example.com</span>
+                            </div>
+                            <div class="flex items-center gap-4 text-slate-300">
+                                <div class="h-11 w-11 rounded-xl glass border-white/5 flex items-center justify-center text-brand-400 shadow-neon-glow">
+                                    <i class="fa-solid fa-map-location-dot"></i>
+                                </div>
+                                <span class="text-sm font-semibold">Pune, Maharashtra, India</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modern Premium Contact Form Card -->
+                    <div class="lg:col-span-7 glass-card rounded-3xl p-8 border-brand-500/20 shadow-neon-glow relative overflow-hidden">
+                        <form id="contactForm" onsubmit="event.preventDefault(); submitContactForm();" class="space-y-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-400 tracking-wider mb-2 font-mono">Your Name</label>
+                                    <input type="text" required placeholder="Bhimrao Yamulwad" class="w-full bg-brand-950/50 border border-white/10 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-brand-500 text-sm transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-400 tracking-wider mb-2 font-mono">Your Email</label>
+                                    <input type="email" required placeholder="your@email.com" class="w-full bg-brand-950/50 border border-white/10 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-brand-500 text-sm transition-colors">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-slate-400 tracking-wider mb-2 font-mono">Subject</label>
+                                <input type="text" required placeholder="Let's build a Power BI/SQL/Python Pipeline" class="w-full bg-brand-950/50 border border-white/10 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-brand-500 text-sm transition-colors">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-slate-400 tracking-wider mb-2 font-mono">Message Details</label>
+                                <textarea rows="4" required placeholder="Hi Bhimrao, love your analytical dashboards..." class="w-full bg-brand-950/50 border border-white/10 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-brand-500 text-sm transition-colors resize-none"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-4 rounded-xl bg-brand-600 hover:bg-brand-500 font-bold text-sm text-white transition-all shadow-neon-glow hover:shadow-neon-glow-strong flex items-center justify-center gap-2">
+                                Send Secure Message <i class="fa-solid fa-paper-plane text-xs"></i>
+                            </button>
+                        </form>
+
+                        <!-- Form Submission Success Overlay message -->
+                        <div id="contactSuccessMsg" class="hidden absolute inset-0 bg-[#05020c]/95 flex flex-col items-center justify-center text-center p-8">
+                            <div class="h-16 w-16 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center text-3xl mb-4 animate-bounce">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-2">Message Sent Successfully!</h3>
+                            <p class="text-slate-400 text-sm max-w-sm">Thank you for reaching out. Bhimrao will review your analytics message and connect with you shortly.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="border-t border-white/5 bg-[#030107] py-12 px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-3">
+                    <div class="h-8 w-8 rounded-lg grad-primary flex items-center justify-center text-white shadow-neon-glow">
+                        <i class="fa-solid fa-chart-line text-xs"></i>
+                    </div>
+                    <span class="text-sm font-semibold tracking-wider text-slate-300">Bhimrao Yamulwad &copy; 2025. All Rights Reserved.</span>
+                </div>
+
+                <div class="flex items-center gap-6 text-slate-500 text-xs font-mono">
+                    <span class="hover:text-brand-400 transition-colors cursor-pointer">Security Protocol</span>
+                    <span class="hover:text-brand-400 transition-colors cursor-pointer">Engine V2.5</span>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // High performance beautiful interactive node canvas
+        const canvas = document.getElementById('dataNodesCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        const particles = [];
+        const maxParticles = 65;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4;
+                this.radius = Math.random() * 2 + 1.5;
+                this.color = Math.random() > 0.5 ? '#8b5cf6' : '#00f0ff';
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = this.color;
+                ctx.fill();
+                ctx.shadowBlur = 0; // reset
+            }
+        }
+
+        for (let i = 0; i < maxParticles; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            for (let i = 0; i < particles.length; i++) {
+                const p1 = particles[i];
+                p1.update();
+                p1.draw();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(139, 92, 246, ${0.15 * (1 - dist / 120)})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Interactive Sandbox controllers
+        function runMockSQL() {
+            const out = document.getElementById('sqlOutput');
+            out.classList.remove('hidden');
+        }
+
+        function runMockPandas() {
+            const out = document.getElementById('pandasOutput');
+            out.classList.remove('hidden');
+        }
+
+        // Contact Form processing simulation
+        function submitContactForm() {
+            const success = document.getElementById('contactSuccessMsg');
+            success.classList.remove('hidden');
+            setTimeout(() => {
+                success.classList.add('hidden');
+                document.getElementById('contactForm').reset();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

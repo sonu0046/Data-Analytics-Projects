@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor Fraud Guardian — Secure Console</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+
+  <!-- TOP NAVIGATION -->
+  <header id="app-header" class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="navigate('/')">
+        <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20 ring-1 ring-white/20">
+          <i class="fa-solid fa-shield-halved text-white text-lg"></i>
+        </div>
+        <div>
+          <span class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Vendor Fraud Guardian</span>
+          <span class="ml-2 text-xs font-mono px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">PRD v1.1</span>
+        </div>
+      </div>
+
+      <!-- Navigation Links (Authenticated) -->
+      <nav id="nav-links" class="hidden md:flex items-center space-x-1">
+        <button id="nav-maker" onclick="navigate('/maker')" class="px-3.5 py-1.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center space-x-2">
+          <i class="fa-solid fa-user-pen text-blue-400 text-xs"></i>
+          <span>Maker Queue</span>
+          <span id="badge-maker-count" class="ml-1.5 px-1.5 py-0.2 text-xs rounded-full bg-blue-500/20 text-blue-300 font-mono hidden">0</span>
+        </button>
+
+        <button id="nav-checker" onclick="navigate('/checker')" class="px-3.5 py-1.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center space-x-2">
+          <i class="fa-solid fa-user-check text-emerald-400 text-xs"></i>
+          <span>Checker Queue</span>
+          <span id="badge-checker-count" class="ml-1.5 px-1.5 py-0.2 text-xs rounded-full bg-emerald-500/20 text-emerald-300 font-mono hidden">0</span>
+        </button>
+
+        <button id="nav-intake" onclick="navigate('/intake')" class="px-3.5 py-1.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center space-x-2">
+          <i class="fa-solid fa-file-invoice text-indigo-400 text-xs"></i>
+          <span>New Intake</span>
+        </button>
+
+        <button id="nav-audit" onclick="navigate('/audit-logs')" class="px-3.5 py-1.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center space-x-2">
+          <i class="fa-solid fa-fingerprint text-amber-400 text-xs"></i>
+          <span>Audit Trail</span>
+        </button>
+      </nav>
+
+      <!-- User Context / Logout -->
+      <div id="user-context-section" class="flex items-center space-x-3">
+        <!-- Injected dynamically by app.js -->
+      </div>
+    </div>
+  </header>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed top-20 right-5 z-50 flex flex-col space-y-3 pointer-events-none max-w-md w-full"></div>
+
+  <!-- MAIN APP VIEW CONTAINER -->
+  <main id="app-view" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Loaded dynamically by SPA router -->
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-900 bg-slate-950/80 py-4 mt-auto text-xs text-slate-500 text-center font-mono">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between">
+      <span>Vendor Fraud Guardian &bull; 4 Brothers Architecture &bull; SOC 2 Type II Compliant</span>
+      <span class="mt-1 sm:mt-0 text-slate-600">Zero-Trust &bull; PostgREST DB-RLS Enforced</span>
+    </div>
+  </footer>
+
+  <!-- SPA Router & Controller -->
+  <script src="/static/app.js"></script>
+</body>
+</html>

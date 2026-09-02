@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor Fraud Guardian — Standalone Secure Console</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    body { font-family: 'Inter', sans-serif; background-color: #0b0f19; color: #f1f5f9; }
+    code, pre, .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .glass-card { background: rgba(17, 24, 39, 0.75); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .cooling-off-banner { background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(220, 38, 38, 0.15)); border: 1px solid rgba(245, 158, 11, 0.3); animation: pulse-slow 3s infinite ease-in-out; }
+    @keyframes pulse-slow { 0%, 100% { box-shadow: 0 0 15px rgba(245, 158, 11, 0.1); } 50% { box-shadow: 0 0 25px rgba(245, 158, 11, 0.25); } }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+
+  <!-- TOP NAVIGATION -->
+  <header id="app-header" class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="navigate('/')">
+        <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20 ring-1 ring-white/20">
+          <i class="fa-solid fa-shield-halved text-white text-lg"></i>
+        </div>
+        <div>
+          <span class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Vendor Fraud Guardian</span>
+          <span class="ml-2 text-xs font-mono px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">PRD v1.1 Standalone</span>
+        </div>
+      </div>
+
+      <nav id="nav-links" class="flex items-center space-x-2">
+        <button onclick="navigate('/maker')" class="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center space-x-1.5">
+          <i class="fa-solid fa-user-pen text-blue-400 text-xs"></i>
+          <span>Maker Queue</span>
+        </button>
+        <button onclick="navigate('/checker')" class="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center space-x-1.5">
+          <i class="fa-solid fa-user-check text-emerald-400 text-xs"></i>
+          <span>Checker Queue</span>
+        </button>
+        <button onclick="navigate('/intake')" class="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center space-x-1.5">
+          <i class="fa-solid fa-file-invoice text-indigo-400 text-xs"></i>
+          <span>Intake Simulator</span>
+        </button>
+        <button onclick="navigate('/audit-logs')" class="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center space-x-1.5">
+          <i class="fa-solid fa-fingerprint text-amber-400 text-xs"></i>
+          <span>Audit Trail</span>
+        </button>
+      </nav>
+
+      <div id="user-context-section" class="flex items-center space-x-3">
+        <span class="px-2 py-0.5 rounded text-xs font-mono font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">CHECKER (AAL2)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed top-20 right-5 z-50 flex flex-col space-y-3 pointer-events-none max-w-md w-full"></div>
+
+  <!-- MAIN APP VIEW CONTAINER -->
+  <main id="app-view" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- DASHBOARD BANNER -->
+    <div class="glass-card rounded-2xl p-6 mb-8 border border-slate-800 shadow-2xl relative overflow-hidden">
+      <div class="absolute -top-12 -right-12 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 class="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+            <span>Enterprise Fraud Prevention Dashboard</span>
+            <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono">LIVE PROTECTED</span>
+          </h1>
+          <p class="text-sm text-slate-400 mt-1">Dual-Control Maker-Checker Workflow &bull; 48h Authoritative Cooling-Off &bull; Multi-Tenant RLS</p>
+        </div>
+        <div class="flex items-center space-x-3">
+          <button onclick="navigate('/intake')" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold shadow-lg shadow-blue-500/25 transition flex items-center space-x-2">
+            <i class="fa-solid fa-plus"></i>
+            <span>Simulate Bank Change</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- COOLING OFF BANNER DEMO -->
+    <div class="cooling-off-banner rounded-xl p-4 mb-8 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="h-10 w-10 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400">
+          <i class="fa-solid fa-hourglass-half text-lg"></i>
+        </div>
+        <div>
+          <h4 class="text-sm font-bold text-amber-200">Active 48-Hour Cooling-Off Period In Effect</h4>
+          <p class="text-xs text-amber-300/80">Vendor: Bharat Heavy Engineering Ltd &bull; Account: 9876XXXX9876 &bull; Activation: Authoritative Database Timer</p>
+        </div>
+      </div>
+      <span class="text-xs font-mono font-bold px-3 py-1 rounded bg-amber-500/30 text-amber-100">47h 58m REMAINING</span>
+    </div>
+
+    <!-- METRICS GRID -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
+      <div class="glass-card rounded-xl p-5 border border-slate-800">
+        <div class="text-xs font-mono text-slate-400 uppercase tracking-wider">Total Ingested</div>
+        <div class="text-3xl font-bold text-white mt-1">128</div>
+        <div class="text-xs text-emerald-400 mt-2 flex items-center"><i class="fa-solid fa-arrow-up mr-1"></i> +12% this week</div>
+      </div>
+      <div class="glass-card rounded-xl p-5 border border-slate-800">
+        <div class="text-xs font-mono text-slate-400 uppercase tracking-wider">Critical Spoofs Blocked</div>
+        <div class="text-3xl font-bold text-rose-400 mt-1">14</div>
+        <div class="text-xs text-rose-300 mt-2">SPF/DKIM/DMARC Zero-Trust</div>
+      </div>
+      <div class="glass-card rounded-xl p-5 border border-slate-800">
+        <div class="text-xs font-mono text-slate-400 uppercase tracking-wider">Pending Maker Voice Call</div>
+        <div class="text-3xl font-bold text-blue-400 mt-1">3</div>
+        <div class="text-xs text-blue-300 mt-2">Out-of-band pre-registered phone</div>
+      </div>
+      <div class="glass-card rounded-xl p-5 border border-slate-800">
+        <div class="text-xs font-mono text-slate-400 uppercase tracking-wider">In Cooling-Off (48h)</div>
+        <div class="text-3xl font-bold text-amber-400 mt-1">2</div>
+        <div class="text-xs text-amber-300 mt-2">Checker Approved with Step-Up MFA</div>
+      </div>
+    </div>
+
+    <!-- PENDING ACTIONS TABLE -->
+    <div class="glass-card rounded-2xl border border-slate-800 p-6">
+      <h3 class="text-lg font-bold text-white mb-4 flex items-center justify-between">
+        <span>Dual-Control Pending Verifications Queue</span>
+        <span class="text-xs font-mono text-slate-400">Showing 3 Active Records</span>
+      </h3>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-sm">
+          <thead>
+            <tr class="border-b border-slate-800 text-xs font-mono text-slate-400 uppercase">
+              <th class="pb-3 px-3">Request ID</th>
+              <th class="pb-3 px-3">Vendor Name</th>
+              <th class="pb-3 px-3">Risk Level</th>
+              <th class="pb-3 px-3">Masked Account</th>
+              <th class="pb-3 px-3">Workflow State</th>
+              <th class="pb-3 px-3 text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800/60 font-mono text-xs">
+            <tr class="hover:bg-slate-900/40 transition">
+              <td class="py-3.5 px-3 text-blue-400 font-bold">REQ-98214</td>
+              <td class="py-3.5 px-3 font-sans text-slate-200 font-medium text-sm">Tata Steel Utilities</td>
+              <td class="py-3.5 px-3"><span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 font-bold">CRITICAL (85)</span></td>
+              <td class="py-3.5 px-3 text-slate-300">5432XXXX8765</td>
+              <td class="py-3.5 px-3"><span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300">PENDING_REVIEW</span></td>
+              <td class="py-3.5 px-3 text-right"><button onclick="showMakerModal('Tata Steel Utilities', 'REQ-98214', '+91 22 6665 8282')" class="px-3 py-1 rounded bg-blue-600 hover:bg-blue-500 text-white font-sans text-xs">Verify Call</button></td>
+            </tr>
+            <tr class="hover:bg-slate-900/40 transition">
+              <td class="py-3.5 px-3 text-blue-400 font-bold">REQ-98215</td>
+              <td class="py-3.5 px-3 font-sans text-slate-200 font-medium text-sm">Larsen & Toubro Ltd</td>
+              <td class="py-3.5 px-3"><span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold">MEDIUM (25)</span></td>
+              <td class="py-3.5 px-3 text-slate-300">9876XXXX1234</td>
+              <td class="py-3.5 px-3"><span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300">PENDING_VERIFICATION</span></td>
+              <td class="py-3.5 px-3 text-right"><button onclick="showCheckerModal('Larsen & Toubro Ltd', 'REQ-98215')" class="px-3 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-sans text-xs">MFA Approve</button></td>
+            </tr>
+            <tr class="hover:bg-slate-900/40 transition">
+              <td class="py-3.5 px-3 text-blue-400 font-bold">REQ-98216</td>
+              <td class="py-3.5 px-3 font-sans text-slate-200 font-medium text-sm">Infosys BPM</td>
+              <td class="py-3.5 px-3"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">LOW (10)</span></td>
+              <td class="py-3.5 px-3 text-slate-300">1122XXXX3344</td>
+              <td class="py-3.5 px-3"><span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300">COOLING_OFF</span></td>
+              <td class="py-3.5 px-3 text-right"><span class="text-amber-400 text-xs">48h Hold</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL CONTAINER -->
+  <div id="modal-container" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div id="modal-content" class="glass-card rounded-2xl max-w-lg w-full p-6 border border-slate-700 shadow-2xl"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-900 bg-slate-950/80 py-4 mt-auto text-xs text-slate-500 text-center font-mono">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between">
+      <span>Vendor Fraud Guardian &bull; 4 Brothers Architecture &bull; SOC 2 Type II Compliant</span>
+      <span class="mt-1 sm:mt-0 text-slate-600">Zero-Trust &bull; PostgREST DB-RLS Enforced</span>
+    </div>
+  </footer>
+
+  <script>
+    function showToast(msg, type='info') {
+      const c = document.getElementById('toast-container');
+      const t = document.createElement('div');
+      t.className = 'p-4 rounded-xl border backdrop-blur-md shadow-2xl flex items-center space-x-3 text-sm font-medium bg-slate-900 border-slate-700 text-white';
+      t.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i><span>${msg}</span>`;
+      c.appendChild(t);
+      setTimeout(() => t.remove(), 4000);
+    }
+
+    function showMakerModal(vendor, reqId, phone) {
+      const mc = document.getElementById('modal-container');
+      const box = document.getElementById('modal-content');
+      box.innerHTML = `
+        <h3 class="text-lg font-bold text-white mb-2">Maker Out-of-Band Voice Call Verification</h3>
+        <p class="text-xs text-slate-400 mb-4">Mandatory phone call to pre-registered vendor number.</p>
+        <div class="space-y-3 font-mono text-xs mb-4">
+          <div class="p-3 bg-slate-900 rounded border border-slate-800">
+            <span class="text-slate-400">Vendor:</span> <b class="text-white">${vendor}</b><br>
+            <span class="text-slate-400">Trusted Phone:</span> <b class="text-emerald-400">${phone}</b>
+          </div>
+          <input type="text" id="rep-name" placeholder="Representative Name Spoken To" class="w-full p-2.5 rounded bg-slate-900 border border-slate-700 text-white">
+          <textarea id="transcript" placeholder="Detailed Call Verification Transcript" class="w-full p-2.5 rounded bg-slate-900 border border-slate-700 text-white h-20"></textarea>
+          <input type="text" id="proof" placeholder="OTP / Call Session Reference Token" class="w-full p-2.5 rounded bg-slate-900 border border-slate-700 text-white">
+        </div>
+        <div class="flex justify-end space-x-2">
+          <button onclick="document.getElementById('modal-container').classList.add('hidden')" class="px-4 py-2 rounded bg-slate-800 text-slate-300 text-xs">Cancel</button>
+          <button onclick="submitMaker('${reqId}')" class="px-4 py-2 rounded bg-blue-600 text-white text-xs font-bold">Submit Verification</button>
+        </div>
+      `;
+      mc.classList.remove('hidden');
+    }
+
+    function submitMaker(reqId) {
+      document.getElementById('modal-container').classList.add('hidden');
+      showToast(`Maker Verification for ${reqId} recorded! Status changed to PENDING_VERIFICATION.`);
+    }
+
+    function showCheckerModal(vendor, reqId) {
+      const mc = document.getElementById('modal-container');
+      const box = document.getElementById('modal-content');
+      box.innerHTML = `
+        <h3 class="text-lg font-bold text-white mb-2">Checker Step-Up MFA Dual-Control Approval</h3>
+        <p class="text-xs text-slate-400 mb-4">Independent authorization with mandatory TOTP/Hardware MFA.</p>
+        <div class="space-y-3 font-mono text-xs mb-4">
+          <div class="p-3 bg-slate-900 rounded border border-slate-800">
+            <span class="text-slate-400">Request:</span> <b class="text-white">${reqId}</b> &bull; <b class="text-emerald-400">${vendor}</b><br>
+            <span class="text-slate-400">Cooling-Off:</span> <b class="text-amber-400">48 Hours Mandatory Hold</b>
+          </div>
+          <input type="text" id="mfa-token" placeholder="Enter 6-Digit Step-Up MFA Token (AAL2)" class="w-full p-2.5 rounded bg-slate-900 border border-slate-700 text-white text-center tracking-widest text-lg font-bold">
+          <textarea id="checker-notes" placeholder="Independent Forensic Audit Notes" class="w-full p-2.5 rounded bg-slate-900 border border-slate-700 text-white h-16"></textarea>
+        </div>
+        <div class="flex justify-end space-x-2">
+          <button onclick="document.getElementById('modal-container').classList.add('hidden')" class="px-4 py-2 rounded bg-slate-800 text-slate-300 text-xs">Cancel</button>
+          <button onclick="submitChecker('${reqId}', 'REJECT')" class="px-4 py-2 rounded bg-rose-600 text-white text-xs font-bold">Reject</button>
+          <button onclick="submitChecker('${reqId}', 'APPROVE')" class="px-4 py-2 rounded bg-emerald-600 text-white text-xs font-bold">MFA Authorize</button>
+        </div>
+      `;
+      mc.classList.remove('hidden');
+    }
+
+    function submitChecker(reqId, decision) {
+      document.getElementById('modal-container').classList.add('hidden');
+      if (decision === 'APPROVE') {
+        showToast(`Request ${reqId} APPROVED with Step-Up MFA! 48-Hour Cooling-off started.`);
+      } else {
+        showToast(`Request ${reqId} REJECTED by Checker.`);
+      }
+    }
+
+    function navigate(route) {
+      showToast(`Navigated to ${route} (Console View Active)`);
+    }
+  </script>
+</body>
+</html>

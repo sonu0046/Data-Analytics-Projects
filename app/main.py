@@ -21,8 +21,8 @@ app = FastAPI(
     title=settings.APP_NAME,
     description="Multi-tenant, AI-assisted & Deterministic Fraud Prevention System with Maker-Checker Separation",
     version=settings.APP_VERSION,
-    docs_url="/docs" if settings.ENVIRONMENT != "PRODUCTION" else None,
-    redoc_url="/redoc" if settings.ENVIRONMENT != "PRODUCTION" else None,
+    docs_url="/docs",
+    redoc_url="/redoc",
 )
 
 # 1. Production Security Headers Middleware

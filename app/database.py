@@ -4,19 +4,19 @@ from typing import Optional
 
 load_dotenv()
 
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_ANON_KEY = os.getenv("SUPABASE_ANON_KEY")
-SUPABASE_SERVICE_ROLE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+SUPABASE_URL = os.getenv("SUPABASE_URL", "").strip().strip('"').strip("'")
+SUPABASE_ANON_KEY = os.getenv("SUPABASE_ANON_KEY", "").strip().strip('"').strip("'")
+SUPABASE_SERVICE_ROLE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY", "").strip().strip('"').strip("'")
 
 # Base client with ANON KEY (for RLS-enforced queries)
-# Uses lazy safe init so server startup never crashes if keys or network are resolving
 supabase_base = None
 if SUPABASE_URL and SUPABASE_ANON_KEY:
     try:
         from supabase import create_client
         supabase_base = create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
+        print("[INFO] Supabase Base Client Initialized Successfully ✅")
     except Exception as e:
-        print(f"[WARN] Supabase base client initialization note: {e}")
+        print(f"[INFO] Supabase Base Client Note: {e}")
 
 # Service role client ONLY for system tasks
 supabase_service = None
@@ -24,8 +24,9 @@ if SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY:
     try:
         from supabase import create_client
         supabase_service = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+        print("[INFO] Supabase Service Client Initialized Successfully ✅")
     except Exception as e:
-        print(f"[WARN] Supabase service client initialization note: {e}")
+        print(f"[INFO] Supabase Service Client Note: {e}")
 
 
 def get_rls_enforced_client(user_jwt_token: str):

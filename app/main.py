@@ -1,4 +1,4 @@
-# app/main.py - Production FastAPI Application Entry Point (Step 9 PRD v1.1 Compliant)
+# app/main.py - Production FastAPI Application Entry Point (Step 10 PRD v1.1 Compliant)
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,10 +16,11 @@ from app.routers.maker_verification import router as maker_router
 from app.routers.checker_approval import router as checker_router
 from app.routers.notifications import router as notifications_router
 from app.routers.monitoring import router as monitoring_router
+from app.routers.billing import router as billing_router
 
 app = FastAPI(
     title=settings.APP_NAME,
-    description="Multi-tenant, AI-assisted & Deterministic Fraud Prevention System with Maker-Checker Separation",
+    description="Multi-tenant, AI-assisted & Deterministic Fraud Prevention System with Maker-Checker Separation & SaaS Billing",
     version=settings.APP_VERSION,
     docs_url="/docs",
     redoc_url="/redoc",
@@ -44,6 +45,7 @@ app.include_router(maker_router)
 app.include_router(checker_router)
 app.include_router(notifications_router)
 app.include_router(monitoring_router)
+app.include_router(billing_router)
 
 
 # 4. Production Health Check
@@ -56,6 +58,7 @@ async def health_check():
         "environment": settings.ENVIRONMENT.value,
         "prd_version": "v1.1",
         "security_controls": "LOCKED_AND_HARDENED",
+        "saas_billing": "ACTIVE_AND_ENFORCED",
         "architecture": "4-Brothers-Multi-Tenant",
     }
 
